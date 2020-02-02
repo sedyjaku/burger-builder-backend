@@ -28,7 +28,7 @@ class SimpleUserResource(ModelResource):
 
 class UserResource(ModelResource):
     orders = fields.ToManyField('api.api.OrderResource', 'orders',  null=True, blank=True, readonly=True )
-    addresses = fields.ToManyField('api.api.AddressResource', 'addresses', full=True, null=True)
+    address = fields.OneToOneField('api.api.AddressResource', 'address', full=True, null=True)
 
     class Meta:
         queryset = User.objects.all()
@@ -51,10 +51,8 @@ class UserResource(ModelResource):
         # bundle.obj=user
         # if 'address' in bundle.data.keys():
         #     bundle.data['address']['user'] = bundle.obj
-        if 'addresses' in data_keys:
-            addresses = bundle.data['addresses']
-            for adr in addresses:
-                adr['user'] = bundle.obj
+        if 'address' in data_keys:
+            bundle.data['address']['user'] = bundle.obj
         return bundle
 
     def dehydrate(self, bundle):
@@ -62,7 +60,7 @@ class UserResource(ModelResource):
 
 
 class AddressResource(ModelResource):
-    user = fields.ForeignKey(UserResource, 'user')
+    # user = fields.OneToOneField(UserResource, 'user')
 
     class Meta:
         queryset = Address.objects.all()

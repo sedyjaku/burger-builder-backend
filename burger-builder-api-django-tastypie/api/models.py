@@ -6,7 +6,7 @@ from django.utils.text import slugify
 
 
 class Address(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='addresses')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='address')
     street = models.CharField(max_length=200)
     zip_code = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
